@@ -4,10 +4,21 @@ paleotest = {}
 if not mobkit then
     mobkit = {
         statfunc = function() end,
-        actfunc = function() end,
+        actfunc = function(self, staticdata, dtime_s) if self then self.memory = self.memory or {} end end,
         stepfunc = function() end,
-        recall = function(self, key) return self and self[key] end,
-        remember = function(self, key, val) if self then self[key] = val end return val end,
+        recall = function(self, key)
+            if not self then return nil end
+            if self.memory then return self.memory[key] end
+            return self[key]
+        end,
+        remember = function(self, key, val)
+            if self then
+                self.memory = self.memory or {}
+                self.memory[key] = val
+                self[key] = val
+            end
+            return val
+        end,
         is_alive = function(self) return self and self.object and self.object:get_hp() > 0 end,
         timer = function(self, s) return false end,
         get_stand_pos = function(self) return self.object and self.object:get_pos() or {x=0,y=0,z=0} end,
