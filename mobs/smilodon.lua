@@ -7,7 +7,7 @@ local function set_mob_tables(self)
         local name = entity.name
         if name ~= self.name and
             paleotest.find_string(paleotest.mobkit_mobs, name) then
-            local height = entity.height
+            local height = entity.height or (entity.collisionbox and (entity.collisionbox[5] - entity.collisionbox[2]))
             if not paleotest.find_string(self.targets, name) and height and
                 height < 2 then
                 if entity.object:get_armor_groups() and
@@ -58,7 +58,7 @@ local function smilodon_logic(self)
         end
 
         if self.status ~= "sleeping" then
-            
+
         if prty < 14 then
             if self.hunger < self.max_hunger and self.feeder_timer == 1 then
                 if math.random(1, 2) == 1 then

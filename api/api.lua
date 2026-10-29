@@ -65,6 +65,7 @@ end
 
 function paleotest.on_activate(self, staticdata, dtime_s)
 	mob_core.on_activate(self, staticdata, dtime_s)
+	self.height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
 	self.is_in_shallow = false
 	self.mood = mobkit.recall(self, "mood") or 75
 	self.hunger = mobkit.recall(self, "hunger") or self.max_hunger/2
@@ -165,8 +166,9 @@ function paleotest.on_step(self, dtime, moveresult)
 	if mobkit.recall(self, "mood") ~= self.mood then
 		mobkit.remember(self, "mood", self.mood)
 	end
-	
+
 	-- Check if in shallow water
+	self.height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
 	local pos = mobkit.get_stand_pos(self)
 	local half_height = vector.new(pos.x, pos.y + self.height/2, pos.z)
 	local height = vector.new(pos.x, pos.y + self.height, pos.z)
@@ -221,8 +223,9 @@ function paleotest.feed_tame(self, clicker, feed_count, tame, breed)
 					texture = def.tiles[1]
 				end
             end
+            local mob_height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
             minetest.add_particlespawner({
-                amount = 12*self.height,
+                amount = 12*mob_height,
                 time = 0.1,
                 minpos = minppos,
                 maxpos = maxppos,
@@ -232,8 +235,8 @@ function paleotest.feed_tame(self, clicker, feed_count, tame, breed)
                 maxacc = {x=0, y=-9, z=0},
                 minexptime = 1,
                 maxexptime = 1,
-                minsize = 2*self.height,
-                maxsize = 3*self.height,
+                minsize = 2*mob_height,
+                maxsize = 3*mob_height,
                 collisiondetection = true,
                 vertical = false,
                 texture = texture,
@@ -470,8 +473,9 @@ function paleotest.block_breaking(self)
 	if not block_breaking then
 		return
 	end
+	local mob_height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
 	local width = self.object:get_properties().collisionbox[4] + 0.25
-	local height = self.height + 0.25
+	local height = mob_height + 0.25
 	local pos = mobkit.get_stand_pos(self)
 	local pos1 = {x = pos.x + width, y = pos.y + height, z = pos.z + width}
 	local pos2 = {x = pos.x - width, y = pos.y, z = pos.z - width}
