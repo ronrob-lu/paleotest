@@ -1,5 +1,5 @@
 ---------------------
--- Fossil Analyzer --
+-- Feeders --
 ---------------------
 ------ Ver 2.0 ------
 --------------
@@ -51,7 +51,7 @@ function paleotest.register_feeder(name, def)
         groups = {cracky = 2, tubedevice = 1, tubedevice_receiver = 1},
         legacy_facedir_simple = true,
         is_ground_content = false,
-        sounds = default.node_sound_stone_defaults(),
+        sounds = paleotest.node_sound_stone_defaults(),
         drawtype = "node",
 
         on_construct = function(pos)

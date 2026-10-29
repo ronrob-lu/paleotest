@@ -3,6 +3,15 @@
 ---------------------
 ------ Ver 2.0 ------
 
+local sand_item = minetest.registered_items["default:sand"] and "default:sand 3" or (minetest.registered_items["mcl_core:sand"] and "mcl_core:sand 3" or "paleotest:fossil 1")
+local gravel_item = minetest.registered_items["default:gravel"] and "default:gravel 3" or (minetest.registered_items["mcl_core:gravel"] and "mcl_core:gravel 3" or "paleotest:fossil 1")
+local bones_item = minetest.registered_items["bones:bones"] and "bones:bones" or (minetest.registered_items["mcl_bones:bone_block"] and "mcl_bones:bone_block 1" or "paleotest:ancient_bones 1")
+local cobble_item = minetest.registered_items["default:cobble"] and "default:cobble 3" or (minetest.registered_items["mcl_core:cobble"] and "mcl_core:cobble 3" or "paleotest:fossil_block 1")
+local dirt_item = minetest.registered_items["default:dirt"] and "default:dirt 3" or (minetest.registered_items["mcl_core:dirt"] and "mcl_core:dirt 3" or "paleotest:fossil 1")
+local coalblock_item = minetest.registered_items["default:coalblock"] and "default:coalblock" or (minetest.registered_items["mcl_core:coalblock"] and "mcl_core:coalblock" or "paleotest:plant_fossil 1")
+local coal_lump_item = minetest.registered_items["default:coal_lump"] and "default:coal_lump 4" or (minetest.registered_items["mcl_core:coal"] and "mcl_core:coal 4" or "paleotest:plant_fossil 1")
+local permafrost_item = minetest.registered_items["default:permafrost"] and "default:permafrost" or (minetest.registered_items["mcl_deepslate:deepslate"] and "mcl_deepslate:deepslate 3" or "paleotest:suspicious_permafrost 1")
+
 local fossil_output = {
 	"paleotest:dna_brachiosaurus", "paleotest:dna_carnotaurus",
 	"paleotest:dna_dunkleosteus", "paleotest:dna_plesiosaurus",
@@ -11,25 +20,25 @@ local fossil_output = {
     "paleotest:dna_spinosaurus", "paleotest:dna_stegosaurus",
     "paleotest:dna_triceratops", "paleotest:dna_tyrannosaurus",
     "paleotest:dna_velociraptor",
-	"default:sand 3", "default:gravel 3", "bones:bones",
-	"default:sand 3", "default:gravel 3", "bones:bones",
-    "default:sand 3", "default:gravel 3", "bones:bones"
+	sand_item, gravel_item, bones_item,
+	sand_item, gravel_item, bones_item,
+    sand_item, gravel_item, bones_item
 }
-local waste_fossil = {"default:sand 3", "default:gravel 3", "default:cobble 3"}
+local waste_fossil = {sand_item, gravel_item, cobble_item}
 
 local bone_output = {
     "paleotest:dna_dire_wolf", "paleotest:dna_elasmotherium",
     "paleotest:dna_mammoth", "paleotest:dna_procoptodon",
-    "paleotest:dna_smilodon", "paleotest:dna_thylacoleo", "default:sand 3",
-    "default:gravel 3", "bones:bones"
+    "paleotest:dna_smilodon", "paleotest:dna_thylacoleo", sand_item,
+    gravel_item, bones_item
 }
-local waste_bone = {"bones:bones", "default:permafrost", "default:dirt 3"}
+local waste_bone = {bones_item, permafrost_item, dirt_item}
 
 local plant_output = {
     "paleotest:fossilized_cycad_seeds", "paleotest:fossilized_horsetail_spores",
     "paleotest:metasequoia_sapling_petrified"
 }
-local waste_plant = {"default:coalblock", "default:coal_lump 4"}
+local waste_plant = {coalblock_item, coal_lump_item}
 
 -----------------------
 -- Initial Functions --
@@ -139,7 +148,7 @@ minetest.register_node("paleotest:fossil_analyzer", {
     groups = {cracky = 2, tubedevice = 1, tubedevice_receiver = 1},
     legacy_facedir_simple = true,
     is_ground_content = false,
-    sounds = default.node_sound_stone_defaults(),
+    sounds = paleotest.node_sound_stone_defaults(),
     drawtype = "node",
 
     can_dig = function(pos)
@@ -242,8 +251,8 @@ minetest.register_node("paleotest:fossil_analyzer", {
 
     on_blast = function(pos)
         local drops = {}
-        default.get_inventory_drops(pos, "input", drops)
-        default.get_inventory_drops(pos, "output", drops)
+        paleotest.get_inventory_drops(pos, "input", drops)
+        paleotest.get_inventory_drops(pos, "output", drops)
         table.insert(drops, "paleotest:fossil_analyzer")
         minetest.remove_node(pos)
         return drops

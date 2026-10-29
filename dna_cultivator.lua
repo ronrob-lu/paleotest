@@ -98,7 +98,7 @@ minetest.register_node("paleotest:dna_cultivator", {
     groups = {cracky = 2, tubedevice = 1, tubedevice_receiver = 1},
     legacy_facedir_simple = true,
     is_ground_content = false,
-    sounds = default.node_sound_stone_defaults(),
+    sounds = paleotest.node_sound_stone_defaults(),
     drawtype = "node",
     can_dig = function(pos)
         local meta = minetest.get_meta(pos)
@@ -195,8 +195,8 @@ minetest.register_node("paleotest:dna_cultivator", {
     end,
     on_blast = function(pos)
         local drops = {}
-        default.get_inventory_drops(pos, "input", drops)
-        default.get_inventory_drops(pos, "output", drops)
+        paleotest.get_inventory_drops(pos, "input", drops)
+        paleotest.get_inventory_drops(pos, "output", drops)
         table.insert(drops, "paleotest:dna_cultivator")
         minetest.remove_node(pos)
         return drops
