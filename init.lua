@@ -364,9 +364,12 @@ if not mob_core then
         register_spawn_egg = function(mob_name, color1, color2)
             local desc = mob_core.get_name_proper(mob_name)
             local raw_name = mob_name:split(":")[2] or mob_name
+            local color1_hex = color1 or "ffffff"
+            local color2_hex = color2 or "ffffff"
             minetest.register_craftitem("paleotest:egg_spawn_" .. raw_name, {
                 description = desc .. " Spawn Egg",
-                inventory_image = "paleotest_egg_" .. raw_name .. ".png",
+                inventory_image = "paleotest_spawn_egg_base.png^[multiply:#" .. color1_hex ..
+                                  "^paleotest_spawn_egg_overlay.png^[multiply:#" .. color2_hex,
                 on_place = function(itemstack, placer, pointed_thing)
                     local pos = minetest.get_pointed_thing_position(pointed_thing, true)
                     if pos then
@@ -384,8 +387,17 @@ if not mob_core then
             if not self or not self.object then return end
             scale = scale or 1
             local base_vis = self.visual_size or {x = 1, y = 1}
+            local base_col = self.collisionbox or {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
             self.object:set_properties({
-                visual_size = {x = base_vis.x * scale, y = base_vis.y * scale}
+                visual_size = {x = base_vis.x * scale, y = base_vis.y * scale},
+                collisionbox = {
+                    base_col[1] * scale,
+                    base_col[2] * scale,
+                    base_col[3] * scale,
+                    base_col[4] * scale,
+                    base_col[5] * scale,
+                    base_col[6] * scale
+                }
             })
         end,
         set_textures = function(self)
@@ -634,6 +646,12 @@ if not mob_core then
         hq_mount_logic = function(self, prty) end,
         punch_timer = function(self, cooldown)
             if cooldown then self.punch_timer = cooldown end
+        end,
+        logic_aerial_takeoff_flee_player = function(self, prty, height)
+            local player = mobkit.get_nearby_player(self)
+            if player then
+                mob_core.hq_takeoff(self, prty, height)
+            end
         end,
     }
 end
