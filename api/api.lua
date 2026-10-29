@@ -64,7 +64,9 @@ end
 -----------------
 
 function paleotest.on_activate(self, staticdata, dtime_s)
+	mobkit.actfunc(self, staticdata, dtime_s)
 	mob_core.on_activate(self, staticdata, dtime_s)
+	self.memory = self.memory or {}
 	self.height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
 	self.is_in_shallow = false
 	self.mood = mobkit.recall(self, "mood") or 75

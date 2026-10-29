@@ -42,6 +42,7 @@ minetest.register_on_mods_loaded(function()
             if not old_act then old_act = function() end end
             local on_activate = function(self, staticdata, dtime_s)
                 old_act(self, staticdata, dtime_s)
+                self.memory = self.memory or {}
                 self.paleo_pregnant_data =
                     mobkit.recall(self, "paleo_pregnant_data") or nil
             end
@@ -306,7 +307,10 @@ end
 
 function paleotest.spawn_imprinted_child(pos, mob)
     local child = minetest.add_entity(pos, mob)
+    if not child then return end
     local luaent = child:get_luaentity()
+    if not luaent then return end
+    luaent.memory = luaent.memory or {}
     luaent.child = mobkit.remember(luaent, "child", true)
     luaent.growth_timer = mobkit.remember(luaent, "growth_timer", 1)
     luaent.growth_stage = mobkit.remember(luaent, "growth_stage", 1)
