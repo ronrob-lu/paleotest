@@ -20,7 +20,8 @@ local function scan_for_prey(self)
             local ent = object:get_luaentity()
             if mob_core.is_mobkit_mob(ent)
             and ent.isonground then
-                if ent.height < 1
+                local ent_height = ent.height or (ent.collisionbox and (ent.collisionbox[5] - ent.collisionbox[2])) or 1
+                if ent_height < 1
                 or ent.child then
                     self.prey = object
                 end

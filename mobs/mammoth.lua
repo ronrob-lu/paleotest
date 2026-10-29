@@ -7,7 +7,7 @@ local function set_mob_tables(self)
         local name = entity.name
         if name ~= self.name and
             paleotest.find_string(paleotest.mobkit_mobs, name) then
-            local height = entity.height
+            local height = entity.height or (entity.collisionbox and (entity.collisionbox[5] - entity.collisionbox[2]))
             if not paleotest.find_string(self.targets, name) and height and
                 height < 3.5 then
                 if entity.object:get_armor_groups() and
@@ -71,7 +71,7 @@ local function mammoth_logic(self)
                     end
                 end
             end
-    
+
             if prty < 12 then
                 if not self.child then
                     if self.attacks == "mobs" or self.attacks == "all" then
@@ -86,7 +86,7 @@ local function mammoth_logic(self)
                     end
                 end
             end
-    
+
             if prty < 10 then
                 if player
                 and not self.child then
@@ -95,13 +95,13 @@ local function mammoth_logic(self)
                     end
                 end
             end
-    
+
             if prty < 8 then
                 if self.mood > 50 then
                     mob_core.hq_follow_holding(self, 8, player)
                 end
             end
-    
+
             if prty < 6 then
                 if math.random(1, self.mood) == 1 then
                     if paleotest.can_find_post(self) then
@@ -112,7 +112,7 @@ local function mammoth_logic(self)
                 end
             end
         end
-    
+
         if prty < 2 then
             if self.sleep_timer <= 0 and self.status ~= "following" then
                 paleotest.hq_sleep(self, 2)
