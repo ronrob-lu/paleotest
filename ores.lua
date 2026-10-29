@@ -10,10 +10,13 @@
 
 -- Fossil Block --
 
+local stone_wherein = {"default:stone", "mcl_core:stone", "mcl_deepslate:deepslate"}
+local permafrost_wherein = {"default:permafrost_with_stones", "default:permafrost", "mcl_core:dirt", "mcl_core:coarse_dirt"}
+
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "paleotest:fossil_block",
-	wherein        = "default:stone",
+	wherein        = stone_wherein,
 	clust_scarcity = 64 * 64 * 64,
 	clust_num_ores = 5,
 	clust_size     = 3,
@@ -24,7 +27,7 @@ minetest.register_ore({
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "paleotest:fossil_block",
-	wherein        = "default:stone",
+	wherein        = stone_wherein,
 	clust_scarcity = 32 * 32 * 32,
 	clust_num_ores = 4,
 	clust_size     = 3,
@@ -35,7 +38,7 @@ minetest.register_ore({
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "paleotest:fossil_block",
-	wherein        = "default:stone",
+	wherein        = stone_wherein,
 	clust_scarcity = 16 * 16 * 16,
 	clust_num_ores = 5,
 	clust_size     = 3,
@@ -48,20 +51,9 @@ minetest.register_ore({
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "paleotest:suspicious_permafrost",
-	wherein        = "default:permafrost_with_stones",
+	wherein        = permafrost_wherein,
 	clust_scarcity = 32 * 32 * 32,
 	clust_num_ores = 5,
-	clust_size     = 3,
-	y_max          = 256,
-	y_min          = -256,
-})
-
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "paleotest:suspicious_permafrost",
-	wherein        = "default:permafrost",
-	clust_scarcity = 32 * 32 * 32,
-	clust_num_ores = 4,
 	clust_size     = 3,
 	y_max          = 256,
 	y_min          = -256,
