@@ -1,6 +1,40 @@
 paleotest = {}
 
 -- Provide fallback stubs if mobkit or mob_core are missing
+-- Overwrite mobkit.get_stand_pos immediately if mobkit exists to fix the nil index crash
+if mobkit and mobkit.get_stand_pos then
+    local old_get_stand_pos = mobkit.get_stand_pos
+    mobkit.get_stand_pos = function(thing)
+        local pos
+        local colbox
+        if type(thing) == "table" then
+            if thing.object and thing.object.get_pos and thing.object.get_properties then
+                pos = thing.object:get_pos()
+                local props = thing.object:get_properties()
+                if props then
+                    colbox = props.collisionbox
+                end
+            end
+        elseif type(thing) == "userdata" then
+            if thing.get_pos and thing.get_properties then
+                pos = thing:get_pos()
+                local props = thing:get_properties()
+                if props then
+                    colbox = props.collisionbox
+                end
+            end
+        else
+            return false
+        end
+        if pos and colbox then
+            return mobkit.pos_shift(pos, { y = colbox[2] + 0.01 }), pos
+        elseif pos then
+            return pos, pos
+        end
+        return nil
+    end
+end
+
 if not mobkit then
     mobkit = {
         statfunc = function(self)
