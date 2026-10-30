@@ -95,7 +95,7 @@ function paleotest.hq_latch(self,prty,target)
             end
             return true
         end
-        local pos = mobkit.get_stand_pos(self)
+        local pos = mobkit.get_stand_pos(self.object)
         local tpos = mobkit.get_stand_pos(target)
 		local dist = vec_dist(pos,tpos)
 		if not self.latching then
@@ -133,7 +133,7 @@ end
 function paleotest.hq_fight_and_flee(self, prty, target)
 	local func = function(self)
 		if not mobkit.is_alive(target) then return true end
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local tpos = target:get_pos()
 		if mobkit.is_queue_empty_low(self) then
 			mob_core.punch_timer(self)
@@ -186,7 +186,7 @@ end
 function paleotest.hq_go_to_feeder(self, prty, search_for)
 	local timer = 16
 	local func = function(self)
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local pos1 = {x=pos.x -self.view_range,y=pos.y-self.view_range,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x +self.view_range,y=pos.y+self.view_range,z=pos.z+self.view_range}
 		local nodes = minetest.find_nodes_in_area(pos1, pos2, search_for)
@@ -227,7 +227,7 @@ end
 
 function paleotest.hq_aqua_go_to_feeder(self,prty,search_for)
 	local func = function(self)
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local pos1 = {x=pos.x -self.view_range,y=pos.y-1,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x +self.view_range,y=pos.y+1,z=pos.z+self.view_range}
 		local nodes = minetest.find_nodes_in_area(pos1,pos2,search_for)
@@ -306,7 +306,7 @@ end
 function paleotest.hq_graze(self, prty, search_for)
     local timer = 8
 	local func = function(self)
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local pos1 = {x=pos.x-self.view_range,y=pos.y-self.view_range,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x+self.view_range,y=pos.y+self.view_range,z=pos.z+self.view_range}
 		local food = minetest.find_nodes_in_area(pos1, pos2, search_for)
@@ -336,7 +336,7 @@ end
 function paleotest.hq_graze_high(self,prty,search_for,height)
     local timer = 12
 	local func = function(self)
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local pos1 = {x=pos.x-self.view_range,y=pos.y-1,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x+self.view_range,y=pos.y+height,z=pos.z+self.view_range}
 		local food = minetest.find_nodes_in_area(pos1, pos2, search_for)
@@ -372,7 +372,7 @@ function paleotest.hq_flop(self, prty)
 			mobkit.lq_fallover(self)
 			init = false
 		end
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local yaw = self.object:get_yaw()
 		local vel = self.object:get_velocity()
 		local pos1 = {x=pos.x-self.view_range,y=pos.y-self.view_range/4,z=pos.z-self.view_range}
@@ -530,7 +530,7 @@ end
 
 function paleotest.logic_play_with_post(self,prty)
 	local func = function(self)
-		local pos = mobkit.get_stand_pos(self)
+		local pos = mobkit.get_stand_pos(self.object)
 		local pos1 = {x=pos.x -self.view_range,y=pos.y-1,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x +self.view_range,y=pos.y+1,z=pos.z+self.view_range}
 		local post = minetest.find_nodes_in_area(pos1,pos2,"paleotest:scratching_post")
@@ -598,7 +598,7 @@ function paleotest.hq_aerial_mount_logic(self, prty)
         if not init then
             self.driver:set_attach(self.object, "Torso.2", self.driver_attach_at, self.player_rotation)
         end
-        local pos = mobkit.get_stand_pos(self)
+        local pos = mobkit.get_stand_pos(self.object)
 
         if timer <= 0 then
             last_pos = pos
@@ -707,7 +707,7 @@ function paleotest.hq_aerial_follow(self, prty, target)
             return true
         end
         if mobkit.is_queue_empty_low(self) and not self.isinliquid then
-            local pos = mobkit.get_stand_pos(self)
+            local pos = mobkit.get_stand_pos(self.object)
             local pos2 = target:get_pos()
             if vector.distance(pos, pos2) > 12 then
                 timer = timer - self.dtime
