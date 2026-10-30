@@ -51,6 +51,7 @@ minetest.register_on_mods_loaded(function()
             local old_step = def.on_step
             if not old_step then old_step = function() end end
             local on_step = function(self, dtime, moveresult)
+                if not self or not self.object or not self.object:get_pos() then return end
                 old_step(self, dtime, moveresult)
                 if self.paleo_pregnant_data then
                     if self.paleo_pregnant_data.timer > 0 then
@@ -394,6 +395,7 @@ function paleotest.register_egg(mob, scale, imprint)
             self.progress = mobkit.recall(self, "progress")
         end,
         on_step = function(self, dtime)
+            if not self or not self.object or not self.object:get_pos() then return end
             mobkit.stepfunc(self, dtime)
             local pos = self.object:get_pos()
             mob_core.collision_detection(self)

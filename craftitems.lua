@@ -307,7 +307,7 @@ local function ball_physics(self)
 	-- buoyancy
 	local surface = nil
 	local surfnodename = nil
-	local spos = mobkit.get_stand_pos(self)
+	local spos = mobkit.get_stand_pos(self.object)
 	spos.y = spos.y+0.01
 	-- get surface height
 	local snodepos = mobkit.get_node_pos(spos)

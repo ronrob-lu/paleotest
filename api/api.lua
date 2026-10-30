@@ -88,6 +88,7 @@ end
 -------------
 
 function paleotest.on_step(self, dtime, moveresult)
+	if not self or not self.object or not self.object:get_pos() then return end
 	mobkit.stepfunc(self, dtime)
 	self.moveresult = moveresult
 	if not mobkit.is_alive(self) then return end
@@ -171,7 +172,7 @@ function paleotest.on_step(self, dtime, moveresult)
 
 	-- Check if in shallow water
 	self.height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
-	local pos = mobkit.get_stand_pos(self)
+	local pos = mobkit.get_stand_pos(self.object)
 	local half_height = vector.new(pos.x, pos.y + self.height/2, pos.z)
 	local height = vector.new(pos.x, pos.y + self.height, pos.z)
 	if self.isinliquid
@@ -478,7 +479,7 @@ function paleotest.block_breaking(self)
 	local mob_height = self.height or (self.collisionbox and (self.collisionbox[5] - self.collisionbox[2])) or 1
 	local width = self.object:get_properties().collisionbox[4] + 0.25
 	local height = mob_height + 0.25
-	local pos = mobkit.get_stand_pos(self)
+	local pos = mobkit.get_stand_pos(self.object)
 	local pos1 = {x = pos.x + width, y = pos.y + height, z = pos.z + width}
 	local pos2 = {x = pos.x - width, y = pos.y, z = pos.z - width}
 	local area = minetest.find_nodes_in_area(pos1, pos2, paleotest.global_walkable)
