@@ -106,7 +106,7 @@ minetest.register_entity("paleotest:plesiosaurus", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = false,
+    collide_with_objects = true,
     static_save = true,
     needs_enrichment = false,
     live_birth = true,

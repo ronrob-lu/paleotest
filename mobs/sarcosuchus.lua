@@ -222,7 +222,7 @@ minetest.register_entity("paleotest:sarcosuchus", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = false,
+    collide_with_objects = true,
     static_save = true,
     ignore_liquidflag = true,
     needs_enrichment = true,
