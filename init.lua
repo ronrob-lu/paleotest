@@ -414,7 +414,12 @@ if not mob_core then
                 on_place = function(itemstack, placer, pointed_thing)
                     local pos = minetest.get_pointed_thing_position(pointed_thing, true)
                     if pos then
-                        pos.y = pos.y + 0.5
+                        local ent = minetest.registered_entities[mob_name]
+                        if ent and ent.collisionbox then
+                            pos.y = pos.y - ent.collisionbox[2]
+                        else
+                            pos.y = pos.y + 0.5
+                        end
                         minetest.add_entity(pos, mob_name)
                         if not minetest.settings:get_bool("creative_mode") then
                             itemstack:take_item()
