@@ -28,19 +28,18 @@ local function hitbox(object)
     return object:get_properties().collisionbox
 end
 
-local function find_closest_pos(tbl, pos)
-    local iter = 2
-    if #tbl < 2 then return end
+local function find_closest_pos(pos, tbl)
+    if not tbl or #tbl < 1 then return end
     local closest = tbl[1]
-    while iter < #tbl do
-        if vec_dist(pos, closest) < vec_dist(pos, tbl[iter + 1]) then
-            iter = iter + 1
-        else
-            closest = tbl[iter]
-            iter = iter + 1
+    local min_dist = vec_dist(pos, closest)
+    for i = 2, #tbl do
+        local dist = vec_dist(pos, tbl[i])
+        if dist < min_dist then
+            closest = tbl[i]
+            min_dist = dist
         end
     end
-    if iter >= #tbl and closest then return closest end
+    return closest
 end
 
 ------------------
@@ -51,6 +50,7 @@ end
 
 function paleotest.lq_dumb_punch(self, target)
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		mobkit.animate(self, "stand")
 		local vel = self.object:get_velocity()
 		self.object:set_velocity({x=0,y=vel.y,z=0})
@@ -83,6 +83,7 @@ end
 function paleotest.hq_latch(self,prty,target)
 	local timer = 4
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
         if not mobkit.is_alive(target) then
             if self.latching == target then
                 mobkit.animate(self,"stand")
@@ -132,6 +133,7 @@ end
 
 function paleotest.hq_fight_and_flee(self, prty, target)
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		if not mobkit.is_alive(target) then return true end
 		local pos = mobkit.get_stand_pos(self)
 		local tpos = target:get_pos()
@@ -186,6 +188,7 @@ end
 function paleotest.hq_go_to_feeder(self, prty, search_for)
 	local timer = 16
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = mobkit.get_stand_pos(self)
 		local pos1 = {x=pos.x -self.view_range,y=pos.y-self.view_range,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x +self.view_range,y=pos.y+self.view_range,z=pos.z+self.view_range}
@@ -227,6 +230,7 @@ end
 
 function paleotest.hq_aqua_go_to_feeder(self,prty,search_for)
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = mobkit.get_stand_pos(self)
 		local pos1 = {x=pos.x -self.view_range,y=pos.y-1,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x +self.view_range,y=pos.y+1,z=pos.z+self.view_range}
@@ -265,6 +269,7 @@ end
 
 function paleotest.hq_eat_items(self, prty)
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(pos, self.view_range)
 		if #objs < 1 then return true end
@@ -306,6 +311,7 @@ end
 function paleotest.hq_graze(self, prty, search_for)
     local timer = 8
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = mobkit.get_stand_pos(self)
 		local pos1 = {x=pos.x-self.view_range,y=pos.y-self.view_range,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x+self.view_range,y=pos.y+self.view_range,z=pos.z+self.view_range}
@@ -336,6 +342,7 @@ end
 function paleotest.hq_graze_high(self,prty,search_for,height)
     local timer = 12
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = mobkit.get_stand_pos(self)
 		local pos1 = {x=pos.x-self.view_range,y=pos.y-1,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x+self.view_range,y=pos.y+height,z=pos.z+self.view_range}
@@ -366,6 +373,7 @@ end
 function paleotest.hq_flop(self, prty)
 	local init = true
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		if self.isinliquid then return true end
 		if not mobkit.is_alive(self) then return true end
 		if init then
@@ -399,6 +407,7 @@ function paleotest.hq_roar(self, prty)
 	local init = true
 	local duration = anim_length(self, "roar")
 	local func=function(self)
+		if not mobkit.is_alive(self) then return true end
 		if mobkit.is_queue_empty_low(self) then
 			if init then
 				mobkit.animate(self, "roar")
@@ -431,6 +440,7 @@ end
 
 function paleotest.lq_go_to_sleep(self)
     local func = function(self)
+	if not mobkit.is_alive(self) then return true end
 		mobkit.animate(self, "sleep")
 		self.status = mobkit.remember(self, "status", "sleeping")
 		if not self.child
@@ -448,6 +458,7 @@ end
 
 function paleotest.lq_wakeup(self)
     local func = function(self)
+	if not mobkit.is_alive(self) then return true end
         mobkit.animate(self, "stand")
 		self.status = mobkit.remember(self, "status", "")
 		self.object:set_texture_mod("")
@@ -460,6 +471,7 @@ end
 
 function paleotest.hq_sleep(self, prty)
     local func = function(self)
+	if not mobkit.is_alive(self) then return true end
 		local time = get_time()
         if self.status ~= "sleeping"
         and time ~= self.sleeps_at then
@@ -495,6 +507,7 @@ end
 
 function paleotest.logic_play_with_ball(self, prty)
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(pos, self.view_range)
 		if #objs < 1 then return true end
@@ -530,6 +543,7 @@ end
 
 function paleotest.logic_play_with_post(self,prty)
 	local func = function(self)
+		if not mobkit.is_alive(self) then return true end
 		local pos = mobkit.get_stand_pos(self)
 		local pos1 = {x=pos.x -self.view_range,y=pos.y-1,z=pos.z-self.view_range}
 		local pos2 = {x=pos.x +self.view_range,y=pos.y+1,z=pos.z+self.view_range}
@@ -594,6 +608,7 @@ function paleotest.hq_aerial_mount_logic(self, prty)
     local timer = 0.25
     local init = false
     local func = function(self)
+	if not mobkit.is_alive(self) then return true end
         if not self.driver then return true end
         if not init then
             self.driver:set_attach(self.object, "Torso.2", self.driver_attach_at, self.player_rotation)
@@ -703,6 +718,7 @@ function paleotest.hq_aerial_follow(self, prty, target)
     local center = self.object:get_pos()
     local timer = 5
     local func = function(self)
+	if not mobkit.is_alive(self) then return true end
         if not mobkit.is_alive(target) then
             return true
         end
