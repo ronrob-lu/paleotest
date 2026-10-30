@@ -88,6 +88,7 @@ end
 -------------
 
 function paleotest.on_step(self, dtime, moveresult)
+	if not self or not self.object or not self.object:get_pos() then return end
 	mobkit.stepfunc(self, dtime)
 	self.moveresult = moveresult
 	if not mobkit.is_alive(self) then return end
