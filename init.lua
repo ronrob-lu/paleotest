@@ -232,6 +232,7 @@ if not mobkit then
             local func = function(self)
                 if not target or not target:get_pos() then return true end
                 local pos = mobkit.get_stand_pos(self.object)
+                if not pos then return true end
                 local tpos = target:get_pos()
                 local dist = vector.distance(pos, tpos)
                 if dist > 3 then
@@ -481,6 +482,7 @@ if not mob_core then
         goto_next_waypoint = function(self, target_pos)
             if not self or not self.object or not target_pos then return end
             local pos = mobkit.get_stand_pos(self.object)
+            if not pos then return end
             local dir = vector.direction(pos, target_pos)
             local tyaw = minetest.dir_to_yaw(dir)
             mobkit.turn2yaw(self, tyaw, 6)
@@ -524,8 +526,11 @@ if not mob_core then
         end,
         hq_roam = function(self, prty, slow)
             local func = function(self)
-                if not self.roam_target or vector.distance(mobkit.get_stand_pos(self.object), self.roam_target) < 2 or math.random(1, 100) == 1 then
+                local stand_pos = mobkit.get_stand_pos(self.object)
+                if not stand_pos then return true end
+                if not self.roam_target or vector.distance(stand_pos, self.roam_target) < 2 or math.random(1, 100) == 1 then
                     local pos = mobkit.get_stand_pos(self.object)
+                    if not pos then return true end
                     local rx = math.random(-12, 12)
                     local rz = math.random(-12, 12)
                     self.roam_target = {x = pos.x + rx, y = pos.y, z = pos.z + rz}
@@ -574,6 +579,7 @@ if not mob_core then
             local func = function(self)
                 if not target or not target:get_pos() then return true end
                 local pos = mobkit.get_stand_pos(self.object)
+                if not pos then return true end
                 local tpos = target:get_pos()
                 local dist = vector.distance(pos, tpos)
                 local reach = self.reach or 3
@@ -611,6 +617,7 @@ if not mob_core then
                 local func = function(self)
                     if not pred or not pred:get_pos() then return true end
                     local pos = mobkit.get_stand_pos(self.object)
+                    if not pos then return true end
                     local ppos = pred:get_pos()
                     local runaway_pos = {x = 2 * pos.x - ppos.x, y = pos.y, z = 2 * pos.z - ppos.z}
                     mob_core.goto_next_waypoint(self, runaway_pos)
@@ -669,7 +676,9 @@ if not mob_core then
         end,
         hq_takeoff = function(self, prty, height)
             height = height or 6
-            local target_y = (mobkit.get_stand_pos(self.object).y) + height
+            local stand_pos = mobkit.get_stand_pos(self.object)
+            if not stand_pos then return end
+            local target_y = stand_pos.y + height
             local func = function(self)
                 local pos = self.object:get_pos()
                 if pos and pos.y >= target_y then return true end
