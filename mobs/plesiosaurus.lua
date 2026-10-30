@@ -80,8 +80,8 @@ minetest.register_entity("paleotest:plesiosaurus", {
     knockback = 1,
     -- Movement & Physics
     max_speed = 7,
-    stepheight = 1.26,
-    jump_height = 1.26,
+    stepheight = 1.1,
+    jump_height = 1.1,
     buoyancy = 1,
     springiness = 0,
     obstacle_avoidance_range = 2,
@@ -106,7 +106,7 @@ minetest.register_entity("paleotest:plesiosaurus", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = true,
+    collide_with_objects = false,
     static_save = true,
     needs_enrichment = false,
     live_birth = true,

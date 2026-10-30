@@ -87,7 +87,7 @@ minetest.register_entity("paleotest:mosasaurus", {
     -- Movement & Physics
     max_speed = 4,
     stepheight = 1.1,
-    jump_height = 1.26,
+    jump_height = 1.1,
     buoyancy = 1,
     springiness = 0,
     obstacle_avoidance_range = 1.5,
@@ -114,7 +114,7 @@ minetest.register_entity("paleotest:mosasaurus", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = true,
+    collide_with_objects = false,
     static_save = true,
     needs_enrichment = false,
     live_birth = true,
