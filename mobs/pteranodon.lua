@@ -119,7 +119,7 @@ minetest.register_entity("paleotest:pteranodon", {
     -- Movement & Physics
     max_speed = 6,
     stepheight = 1.1,
-    jump_height = 1.26,
+    jump_height = 1.1,
     max_fall = 3,
     buoyancy = 1,
     springiness = 0,
@@ -145,7 +145,7 @@ minetest.register_entity("paleotest:pteranodon", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = true,
+    collide_with_objects = false,
     static_save = true,
     needs_enrichment = false,
     live_birth = false,

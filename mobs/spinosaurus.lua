@@ -170,8 +170,8 @@ minetest.register_entity("paleotest:spinosaurus", {
     lung_capacity = 180,
     -- Movement & Physics
     max_speed = 5,
-    stepheight = 1.26,
-    jump_height = 1.26,
+    stepheight = 1.1,
+    jump_height = 1.1,
     max_fall = 3,
     buoyancy = 1,
     springiness = 0,
@@ -219,7 +219,7 @@ minetest.register_entity("paleotest:spinosaurus", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = true,
+    collide_with_objects = false,
     static_save = true,
     ignore_liquidflag = true,
     needs_enrichment = true,
