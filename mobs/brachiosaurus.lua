@@ -185,7 +185,7 @@ minetest.register_entity("paleotest:brachiosaurus", {
     },
     -- Basic
     physical = true,
-    collide_with_objects = false,
+    collide_with_objects = true,
     static_save = true,
     needs_enrichment = true,
     live_birth = false,
